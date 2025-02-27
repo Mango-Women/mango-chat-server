@@ -7,7 +7,7 @@ server.on('connection', (ws) => {
   ws.on('message', (message) => {
     try {
       const data = JSON.parse(message);
-      console.log('Received from', data.from, ':', data);
+      console.log('Received:', data); // Should log incoming signals
       const senderId = data.from;
       if (!clients.has(senderId)) {
         clients.set(senderId, ws);
@@ -16,7 +16,7 @@ server.on('connection', (ws) => {
       const targetId = senderId === 'mango1' ? 'mango2' : 'mango1';
       const targetClient = clients.get(targetId);
       if (targetClient && targetClient.readyState === WebSocket.OPEN) {
-        console.log(`Forwarding to ${targetId}`);
+        console.log(`Forwarding to ${targetId}`); // Should log forwarding
         targetClient.send(JSON.stringify(data));
       } else {
         console.log(`Target ${targetId} not connected yet`);
